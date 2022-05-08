@@ -1,5 +1,6 @@
 package ip91.spring.model.entity;
 
+import ip91.spring.model.dto.TopicDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,8 +28,8 @@ public class Topic {
     )
     private Long id;
 
-    @Column
-    private String name;
+    @Column(unique = true)
+    private String title;
 
     @Enumerated(EnumType.STRING)
     private Category category;
@@ -41,9 +42,16 @@ public class Topic {
 
     @ManyToOne
     @JoinColumn(name = "creator_id")
-    private User user;
+    private User creator;
 
-    @OneToMany(mappedBy = "topic", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "topic", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Post> postList;
+
+    public Topic(TopicDto topicDto) {
+        this.title = topicDto.getTitle();
+        this.category = Category.valueOf(topicDto.getCategory());
+        this.creationDate = LocalDate.now();
+        this.actual = true;
+    }
 
 }

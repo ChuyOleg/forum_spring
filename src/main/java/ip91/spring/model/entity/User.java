@@ -1,5 +1,6 @@
 package ip91.spring.model.entity;
 
+import ip91.spring.model.dto.UserDto;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -45,6 +47,9 @@ public class User implements UserDetails {
     @Column
     private boolean blocked;
 
+    @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Post> postList;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority(role.name()));
@@ -69,4 +74,12 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public User(UserDto userDto) {
+        this.username = userDto.getUsername();
+        this.password = userDto.getPassword();
+        this.email = userDto.getEmail();
+        this.blocked = false;
+    }
+
 }

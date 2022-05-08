@@ -1,5 +1,6 @@
 package ip91.spring.model.entity;
 
+import ip91.spring.model.dto.PostDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -39,6 +40,11 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "creator_id")
-    private User user;
+    private User creator;
+
+    public Post(PostDto postDto) {
+        this.text = postDto.getText();
+        this.creationDate = LocalDate.now();
+    }
 
 }

@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS topics (
     id serial PRIMARY KEY ,
-    name varchar(255),
+    title varchar(255),
     category varchar(255),
     creation_date date,
     is_actual boolean,
