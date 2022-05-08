@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import ip91.spring.controller.util.Attribute;
 import ip91.spring.controller.util.UriPath;
 import ip91.spring.model.dto.TopicDto;
+import lombok.extern.java.Log;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping(UriPath.ADMIN_PREFIX + UriPath.TOPICS)
+@Log
 public class AdminTopicController {
 
     // TODO: implement

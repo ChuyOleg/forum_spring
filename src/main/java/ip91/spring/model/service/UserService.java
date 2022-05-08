@@ -3,6 +3,7 @@ package ip91.spring.model.service;
 import ip91.spring.model.entity.User;
 import ip91.spring.model.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Log
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;

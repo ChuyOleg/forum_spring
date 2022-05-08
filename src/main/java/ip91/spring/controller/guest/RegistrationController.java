@@ -10,6 +10,7 @@ import ip91.spring.controller.util.UriPath;
 import ip91.spring.model.dto.UserDto;
 import ip91.spring.model.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor
+@Log
 public class RegistrationController {
 
     private final UserService userService;
