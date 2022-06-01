@@ -1,0 +1,57 @@
+body {
+    height:100vh;
+    min-height: 100%;
+    margin:0;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+.error-message {
+    font-weight: bold;
+    color: red;
+}
+
+/******************************************/
+/************* LOGIN PAGE *****************/
+/******************************************/
+
+.login-form {
+    border: 2px solid black;
+    box-shadow: 0 0 5px 1px black;
+}
+
+/******************************************/
+/********** REGISTRATION PAGE *************/
+/******************************************/
+
+.registration-form {
+    border: 2px solid black;
+    box-shadow: 0 0 5px 1px black;
+}
+
+
+/******************************************/
+/************** FOOTER ********************/
+/******************************************/
+
+footer.page-footer {
+    background: #221921;
+    height: 6.8vh;
+    padding-top: 1.6vh;
+    padding-bottom: 1.6vh;
+    margin-top: auto;
+}
+
+footer.page-footer .initials {
+    text-decoration: none;
+    font-weight: bold;
+    color: navajowhite;
+}
+
+footer .footer-copyright {
+    color: #198754;
+}
