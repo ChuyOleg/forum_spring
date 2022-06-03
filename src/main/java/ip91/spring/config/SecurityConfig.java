@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                     .loginPage(UriPath.LOGIN)
-                    .defaultSuccessUrl(UriPath.MOCK_URI)
+                    .defaultSuccessUrl(UriPath.TOPICS)
                     .failureUrl(UriPath.LOGIN + URI_ERROR_PARAM)
                 .and()
                 .logout()
