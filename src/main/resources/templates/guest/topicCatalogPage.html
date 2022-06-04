@@ -36,6 +36,27 @@
                         </span>
                     </div>
 
+                    <div class="mb-2">
+                        <p class="text-center mt-2 mb-0" th:text="#{topicCatalogPage.isActualQuestion}"></p>
+                        <div class="row mt-2">
+                            <div class="col-4 text-center">
+                                <label th:for="actualTrue" th:text="#{topicCatalogPage.isActual}"></label><br>
+                                <input type="radio" name="isActual" th:checked="${isActual == 'true'}" th:value="true" th:id="actualTrue">
+                            </div>
+
+                            <div class="col-4 text-center">
+                                <label th:for="noMatter" th:text="#{topicCatalogPage.noMatter}"></label><br>
+                                <input type="radio" name="isActual" th:checked="${isActual == ''}" th:value="''" th:id="noMatter">
+                            </div>
+
+
+                            <div class="col-4 text-center">
+                                <label th:for="actualFalse" th:text="#{topicCatalogPage.isNotActual}"></label><br>
+                                <input type="radio" name="isActual" th:checked="${isActual == 'false'}" th:value="false" th:id="actualFalse">
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="text-center mt-2 mb-2">
                         <button class="btn btn-primary" type="submit" th:text="#{filterButton}"></button>
                     </div>

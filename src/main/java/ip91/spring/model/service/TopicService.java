@@ -1,6 +1,7 @@
 package ip91.spring.model.service;
 
 import ip91.spring.model.entity.Category;
+import ip91.spring.model.entity.Post;
 import ip91.spring.model.entity.Topic;
 import ip91.spring.model.repository.TopicRepository;
 import ip91.spring.model.service.util.filter.SearchCriteria;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
 @RequiredArgsConstructor
@@ -45,6 +48,12 @@ public class TopicService {
         return paginationInfo;
     }
 
+    public Topic getById(Long id) {
+        Topic topic = topicRepository.getById(id);
+        topic.getPostList().sort((Post p1, Post p2) -> (int) DAYS.between(p1.getCreationDate(), p2.getCreationDate()));
+        return topic;
+    }
+
     private List<Topic> getPageBySpecification(TopicSpecification specification, int uiPageNumber) {
         final int dbPageNumber = uiPageNumber - 1;
         Pageable pageRequest = PageRequest.of(dbPageNumber, PAGE_SIZE, Sort.by(IS_ACTUAL, CREATION_DATE, ID).descending());
@@ -67,8 +76,9 @@ public class TopicService {
                     .collect(Collectors.toList());
             topicSpecification.add(new SearchCriteria(CATEGORY, categoryList, SearchOperation.IN));
         }
-        if (isActual != null) {
-            topicSpecification.add(new SearchCriteria(IS_ACTUAL, true, SearchOperation.EQUAL));
+        if (isActual != null && !isActual.isEmpty()) {
+            final boolean isActualValue = Boolean.parseBoolean(isActual);
+            topicSpecification.add(new SearchCriteria(IS_ACTUAL, isActualValue, SearchOperation.EQUAL));
         }
 
         return topicSpecification;
