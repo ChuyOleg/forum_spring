@@ -15,8 +15,8 @@ public class HtmlPagePath {
 
     public static final String USER_CREATE_POST_PAGE = USER_PREFIX + "/postCreationPage";
 
-    public static final String ADMIN_CREATE_TOPIC_PAGE = ADMIN_PREFIX + "topicCreationPage";
-    public static final String ADMIN_EDIT_TOPIC_PAGE = ADMIN_PREFIX + "topicEditingPage";
+    public static final String ADMIN_CREATE_TOPIC_PAGE = ADMIN_PREFIX + "/topicCreationPage";
+    public static final String ADMIN_EDIT_TOPIC_PAGE = ADMIN_PREFIX + "/topicEditingPage";
 
 /*
     Guest:

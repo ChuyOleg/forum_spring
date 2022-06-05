@@ -97,9 +97,22 @@
 
                     </div>
 
-                    <div class="text-center">
-                        <a class="btn btn-primary text-align" th:href="@{/topics/{id}/posts(id=${topic.id})}"
-                           role="button" th:text="#{showPostsButton}"></a>
+                    <div class="row justify-content-center">
+                        <div class="text-center col-4">
+                            <a class="btn btn-primary text-align" th:href="@{/topics/{id}/posts(id=${topic.id})}"
+                               role="button" style="width:100%" th:text="#{showPostsButton}"></a>
+                        </div>
+
+                        <div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" class="text-center col-4">
+                            <a class="btn btn-warning text-align" th:href="@{/admin/topics/{id}(id=${topic.id})}"
+                               role="button" style="width:100%" th:text="#{updateTopicButton}"></a>
+                        </div>
+
+                        <form th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" class="text-center col-4"
+                              th:action="@{/admin/topics/{id}(id=${topic.id})}" th:method="DELETE">
+
+                            <button type="submit" style="width:100%" class="btn btn-danger" th:text="#{deleteTopicButton}"></button>
+                        </form>
                     </div>
 
                 </div>

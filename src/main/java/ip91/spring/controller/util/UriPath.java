@@ -10,6 +10,7 @@ public class UriPath {
     public static final String REGISTRATION = "/registration";
 
     public static final String SLASH = "/";
+    public static final String QUESTION_MARK = "?";
 
     public static final String USER_PREFIX = "/user";
     public static final String ADMIN_PREFIX = "/admin";

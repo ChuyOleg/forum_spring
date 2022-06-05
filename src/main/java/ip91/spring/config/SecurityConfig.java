@@ -1,6 +1,7 @@
 package ip91.spring.config;
 
 import ip91.spring.controller.util.UriPath;
+import ip91.spring.model.entity.Role;
 import ip91.spring.model.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,6 +44,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers(ADMIN_PATTERN).hasAnyAuthority(Role.ADMIN.name())
+                .antMatchers(USER_PATTERN).hasAnyAuthority(Role.USER.name())
+                .antMatchers(UriPath.LOGIN).anonymous()
                 .antMatchers(ALL_PATTERN).permitAll()
                 .and()
                 .formLogin()

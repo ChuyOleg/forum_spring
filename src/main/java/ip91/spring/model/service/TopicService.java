@@ -1,8 +1,10 @@
 package ip91.spring.model.service;
 
+import ip91.spring.model.dto.TopicDto;
 import ip91.spring.model.entity.Category;
 import ip91.spring.model.entity.Post;
 import ip91.spring.model.entity.Topic;
+import ip91.spring.model.entity.User;
 import ip91.spring.model.repository.TopicRepository;
 import ip91.spring.model.service.util.filter.SearchCriteria;
 import ip91.spring.model.service.util.filter.SearchOperation;
@@ -14,6 +16,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +38,7 @@ public class TopicService {
     private static final String CATEGORY = "category";
     private static final String IS_ACTUAL = "actual";
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true)
     public TopicPaginationInfo getPaginationResultData(String[] categoryArray, String isActual, int uiPageNumber) {
         TopicPaginationInfo paginationInfo = new TopicPaginationInfo();
 
@@ -52,6 +57,29 @@ public class TopicService {
         Topic topic = topicRepository.getById(id);
         topic.getPostList().sort((Post p1, Post p2) -> (int) DAYS.between(p1.getCreationDate(), p2.getCreationDate()));
         return topic;
+    }
+
+    public void create(TopicDto topicDto, Long creatorId) {
+        Topic topic = new Topic(topicDto);
+        User creator = User.builder().id(creatorId).build();
+
+        topic.setCreator(creator);
+
+        topicRepository.save(topic);
+    }
+
+    @Transactional
+    public void update(TopicDto topicDto, Long topicId) {
+        Topic topic = topicRepository.getById(topicId);
+
+        topic.setTitle(topicDto.getTitle());
+        topic.setCategory(Category.valueOf(topicDto.getCategory()));
+
+        topicRepository.save(topic);
+    }
+
+    public void deleteById(Long id) {
+        topicRepository.deleteById(id);
     }
 
     private List<Topic> getPageBySpecification(TopicSpecification specification, int uiPageNumber) {
