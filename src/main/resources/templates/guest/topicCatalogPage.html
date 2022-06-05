@@ -1,10 +1,128 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
 
+<div th:replace="partial/header"></div>
+
+<div class="container">
+    <div class="row">
+         <div class="col-5 col-lg-3">
+
+            <div class="filter-block pe-4 ps-4 mb-5 mt-5">
+                <form class="row filter-form" autocomplete="off" method="get" action="/topics">
+                    <input name="page" value="1" hidden>
+
+                    <div class="mb-2">
+                        <p class="text-center mt-2 mb-0" th:text="#{topicCatalogPage.category}"></p>
+                        <span th:each="category : ${categoryList}">
+                            <div class="row mt-2">
+                                <label class="col-8" th:for="${category.name()}" th:text="${category.name()}"></label>
+                                <div class="col-4" th:if="${checkedCategoryList != null && checkedCategoryList.contains(category.name())}">
+                                    <input class="col-4" type="checkbox" checked name="category" th:value="${category.name()}" th:id="${category.name()}">
+                                </div>
+                                <div class="col-4" th:unless="${checkedCategoryList != null && checkedCategoryList.contains(category.name())}">
+                                    <input class="col-4" type="checkbox" name="category" th:value="${category.name()}" th:id="${category.name()}">
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+
+                    <div class="mb-2">
+                        <p class="text-center mt-2 mb-0" th:text="#{topicCatalogPage.isActualQuestion}"></p>
+                        <div class="row mt-2">
+                            <div class="col-4 text-center">
+                                <label th:for="actualTrue" th:text="#{topicCatalogPage.isActual}"></label><br>
+                                <input type="radio" name="isActual" th:checked="${isActual == 'true'}" th:value="true" th:id="actualTrue">
+                            </div>
+
+                            <div class="col-4 text-center">
+                                <label th:for="noMatter" th:text="#{topicCatalogPage.noMatter}"></label><br>
+                                <input type="radio" name="isActual" th:checked="${isActual == ''}" th:value="''" th:id="noMatter">
+                            </div>
+
+
+                            <div class="col-4 text-center">
+                                <label th:for="actualFalse" th:text="#{topicCatalogPage.isNotActual}"></label><br>
+                                <input type="radio" name="isActual" th:checked="${isActual == 'false'}" th:value="false" th:id="actualFalse">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-2 mb-2">
+                        <button class="btn btn-primary" type="submit" th:text="#{filterButton}"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <div class="col-6 col-lg-8 offset-1">
+
+            <div th:if="${pagesNumber > 0}">
+                <ul class="pagination-list text-center justify-content-center">
+                    <li><button type="button" th:disabled="${activePageNumber <= 1}" class="btn btn-primary" id="prevPageButton"><</button> </li>
+
+                    <li th:value="${activePageNumber}" class="activePageNumber" id="pageNumber" th:text="${activePageNumber}"></li>
+                    <li th:if="${activePageNumber < pagesNumber}" class="limitPageNumber" th:text="${pagesNumber}"></li>
+
+                    <li><button type="button" th:disabled="${activePageNumber >= pagesNumber}" class="btn btn-primary" id="nextPageButton">></button> </li>
+                </ul>
+            </div>
+            <div th:unless="${pagesNumber > 0}">
+                <h2 class="text-center" th:text="#{topicCatalogPage.noTopicsAccordingToFilter}"></h2>
+            </div>
+
+
+            <div th:each="topic : ${topicList}">
+                <div class="topic-wrapper justify-content-center mb-5">
+                    <div th:class="${'topic-block text-center topic-isActual-' + topic.isActual()}">
+                        <h3 class="text-center topic-name pt-2 pb-2" th:text="${topic.title}"></h3>
+
+                        <div class="row justify-content-center">
+                            <div style="font-style: italic" class="col-8" th:text="${topic.category}"></div>
+                        </div>
+
+                        <div class="row justify-content-center mt-4 mb-2">
+                            <div class="col-8 topic-date" th:text="${topic.creationDate}"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <div class="text-center col-4">
+                            <a class="btn btn-primary text-align" th:href="@{/topics/{id}/posts(id=${topic.id})}"
+                               role="button" style="width:100%" th:text="#{showPostsButton}"></a>
+                        </div>
+
+                        <div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" class="text-center col-4">
+                            <a class="btn btn-warning text-align" th:href="@{/admin/topics/{id}(id=${topic.id})}"
+                               role="button" style="width:100%" th:text="#{updateTopicButton}"></a>
+                        </div>
+
+                        <form th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" class="text-center col-4"
+                              th:action="@{/admin/topics/{id}(id=${topic.id})}" th:method="DELETE">
+
+                            <button type="submit" style="width:100%" class="btn btn-danger" th:text="#{deleteTopicButton}"></button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="partial/footer"></div>
+
+<script type="text/javascript" th:src="@{/js/pagination.js}"></script>
 </body>
 </html>
